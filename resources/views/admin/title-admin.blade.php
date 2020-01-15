@@ -11,7 +11,8 @@
             <h1 class="bg-primary text-light rounded p-2">หน้าหลัก</h1>
         </div>
     </div>
- 
+    <br>
+
     {{-- alert --}}
     @include('layouts.alert-admin')
 
@@ -33,11 +34,13 @@
                             <div class="modal-body">
                                 <div class="row">
                                     <div class="col">
+                                        {{--name --}}
                                         <div class="form-group">
                                             <label for="titleImage">ชื่อภาพ</label>
                                             <input type="text" name="titleImage" value="" class="form-control">
                                         </div>
 
+                                        {{-- image --}}
                                         <div class="form-group">
                                             <label for="fileImage">รูปภาพ</label>                                                               
                                             <input type="hidden" name="_token" value="{{ csrf_token() }}">
@@ -99,7 +102,7 @@
                             <div class="modal fade" id="title-admin-form-edit-{{$item['id']}}" tabindex="-1" role="dialog" aria-labelledby="title-admin-form-edit" aria-hidden="true">
                                 <div class="modal-dialog" role="document">
                                     {{-- form --}}
-                                    <form action="{{ action('AdminTitle@update',$item['id']) }}" method="post" enctype="multipart/form-data">
+                                    <form class="edit_form" action="{{ action('AdminTitle@update',$item['id']) }}" method="post" enctype="multipart/form-data">
                                         <div class="modal-content">
                                             <div class="modal-header">
                                                 <h4 class="modal-title" id="title-admin-form-edit"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>  แก้ไขข้อมูล</h4>
@@ -110,19 +113,20 @@
                                             <div class="modal-body">
                                                 <div class="row">
                                                     <div class="col">
+                                                        {{--name --}}
                                                         <div class="form-group">
                                                             <label for="titleImage">ชื่อภาพ</label>
                                                             <input type="text" name="titleImage" value="{{ $item['admin_titles_name'] }}" class="form-control">
                                                         </div>
                                                         
+                                                        {{-- image --}}
                                                         <div class="form-group">
                                                             <label for="fileImage">รูปภาพ :: {{ substr($item['admin_titles_image'],11) }}</label>
                                                             <input type="hidden" name="_method" value="PUT" > 
                                                             <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                                             <input type="file" name="fileImage" value="" class="form-control-file">
                                                             <img src="{{ asset('/storage/'.substr($item['admin_titles_image'],6)) }}" alt="{{ $item['admin_titles_name'] }}" class="rounded p-2 " style="height: 100px;">
-                                                        </div> 
-                                                        
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>

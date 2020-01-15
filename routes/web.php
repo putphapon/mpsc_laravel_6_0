@@ -54,6 +54,9 @@ Route::get('/contact', 'Home@Contact');
 //title
 Route::resource('/admin/title', 'AdminTitle');
 
+//about
+Route::resource('/admin/about', 'AdminAbout');
+
 //Database
 Route::resource('/admin/database', 'AdminDatabase');
 

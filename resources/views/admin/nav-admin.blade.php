@@ -11,15 +11,7 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto text-uppercase">
             <li class="nav-item"><a class="nav-link" href="/admin/title">หน้าหลัก</a></li>
-
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="about" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">เกี่ยวกับ</a>
-                <div class="dropdown-menu" aria-labelledby="about">
-                    <a class="dropdown-item bg-transparent" href="/admin/objective">วัตถุประสงค์/การดำเนินงาน</a>
-                    <a class="dropdown-item bg-transparent" href="/admin/board">คณะที่ปรึกษา</a>
-                </div>
-            </li>
-    
+            <li class="nav-item"><a class="nav-link" href="/admin/about">เกี่ยวกับ</a></li>    
             <li class="nav-item"><a class="nav-link" href="/admin/database">ฐานข้อมูล</a></li>
             <li class="nav-item"><a class="nav-link" href="/admin/scholar">บทความวิชาการ/งานวิจัย</a></li>
             <li class="nav-item"><a class="nav-link" href="/admin/manuscripts">ธารความรู้</a></li>
@@ -27,7 +19,7 @@
             <li class="nav-item"><a class="nav-link" href="/admin/events">กิจกรรม</a></li>
             <li class="nav-item"><a class="nav-link" href="/admin/shops">ร้านหนังสือ</a></li>
             <li class="nav-item"><a class="nav-link" href="/admin/contact">ติดต่อเรา</a></li>
-
         </ul>
     </div>
 </nav>
+

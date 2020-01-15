@@ -23,6 +23,7 @@
 </head>
 <body>
 
+{{-- nav --}}
 @include('admin.nav-admin')
 <br>
 
