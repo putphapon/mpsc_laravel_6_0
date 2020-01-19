@@ -17,11 +17,11 @@
           @foreach ($title as $item)
             @if( $loop->iteration == 1 )
               <div class="carousel-item active" data-interval="5000">
-                <img src="{{ asset('/storage/'.substr($item->admin_titles_image,7)) }}" class="min-vw-100 vh-100" alt="{{ $item->admin_titles_name }}">
+                <img src="{{ asset('/storage/'.substr($item->title_image,7)) }}" class="min-vw-100 vh-100" alt="{{ $item->title_name }}">
               </div>
             @else
               <div class="carousel-item" data-interval="5000">
-                <img src="{{ asset('/storage/'.substr($item->admin_titles_image,7)) }}" class="min-vw-100 vh-100" alt=" {{ $item->admin_titles_name }}">
+                <img src="{{ asset('/storage/'.substr($item->title_image,7)) }}" class="min-vw-100 vh-100" alt=" {{ $item->title_name }}">
               </div>
             @endif
           @endforeach
@@ -30,8 +30,8 @@
   </div>
 </section>
 
-<section class="flexTitleText text-center">
-  <div class="titleText text-center">
+<section class="d-flex justify-content-around align-items-center text-center">
+  <div>
       <h1>กิจของเรา... ไม่ใช่เพื่อประโยชน์ของตนเอง<br>
         แต่เพื่อให้เป็นความดี...แก่ผู้ที่จะมาในภายหลัง</h1>
       <p class="text-muted blockquote-footer">พุทธวจนะ</p>

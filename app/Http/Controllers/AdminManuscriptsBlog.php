@@ -3,9 +3,21 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use App\AdminManuscriptsBlogModel;
 
 class AdminManuscriptsBlog extends Controller
 {
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -14,6 +26,7 @@ class AdminManuscriptsBlog extends Controller
     public function index()
     {
         //
+        return route('manuscripts.index');
     }
 
     /**
@@ -33,8 +46,32 @@ class AdminManuscriptsBlog extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
-        //
+    { 
+        //validate
+        $this->validate($request,
+            [
+                'nameManuscriptsBlog' => 'required',
+                'detailManuscriptsBlog' => 'required',
+                'imageManuscriptsBlog' => 'required',
+                'idManuscriptsCategory' => 'required',
+                'tagManuscriptsBlog' => 'required',
+                'linkManuscriptsBlog' => 'required'
+            ]
+        );
+ 
+        //insert
+        $data = new AdminManuscriptsBlogModel;
+        $data->manuscripts_blog_name = $request->nameManuscriptsBlog;
+        $data->manuscripts_blog_detail = $request->detailManuscriptsBlog;
+        $data->manuscripts_blog_image = $request->file('imageManuscriptsBlog')->store('public/img');
+        $data->manuscripts_category_id = $request->idManuscriptsCategory;
+        $data->manuscripts_blog_tag = $request->tagManuscriptsBlog;        
+        $data->manuscripts_blog_link = $request->linkManuscriptsBlog;
+
+        //save
+        $data->save();
+
+        return  redirect()->route('manuscripts.index')->with('success','บันทึกข้อมูลเรียบร้อย');
     }
 
     /**
@@ -68,7 +105,41 @@ class AdminManuscriptsBlog extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        //validate
+        $this->validate($request,
+            [
+                'nameManuscriptsBlog' => 'required',
+                'detailManuscriptsBlog' => 'required',
+                //'imageManuscriptsBlog' => 'required',
+                'idManuscriptsCategory' => 'required',
+                'tagManuscriptsBlog' => 'required',
+                'linkManuscriptsBlog' => 'required'
+            ]
+        );
+
+        //search form id
+        $data = AdminManuscriptsBlogModel::find($id);
+
+        //add form id
+        $data->manuscripts_blog_name = $request->nameManuscriptsBlog;
+        $data->manuscripts_blog_detail = $request->detailManuscriptsBlog;
+        $data->manuscripts_category_id = $request->idManuscriptsCategory;
+        $data->manuscripts_blog_tag = $request->tagManuscriptsBlog;
+        $data->manuscripts_blog_link = $request->linkManuscriptsBlog;
+        // $data->manuscripts_blog_image = $request->file('imageManuscriptsBlog')->store('public/img');
+     
+        //check image is null?
+        if($request->imageManuscriptsBlog != null) {
+            //delete file
+            Storage::delete($data['manuscripts_blog_image']);
+            //add file
+            $data->manuscripts_blog_image = $request->file('imageManuscriptsBlog')->store('public/img');
+        }
+
+        //save
+        $data->save();
+
+        return redirect()->route('manuscripts.index')->with('success','บันทึกข้อมูลเรียบร้อย');
     }
 
     /**
@@ -79,6 +150,15 @@ class AdminManuscriptsBlog extends Controller
      */
     public function destroy($id)
     {
-        //
+        //search form id
+        $data = AdminManuscriptsBlogModel::find($id);
+
+        //delete file
+        Storage::delete($data['manuscripts_blog_image']);
+
+        //delete
+        $data->delete();
+
+        return redirect()->route('manuscripts.index')->with('success','ลบข้อมูลเรียบร้อย');
     }
 }

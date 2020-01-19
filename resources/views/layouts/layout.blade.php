@@ -16,7 +16,7 @@
 <link rel="stylesheet" href="{{asset('css/style.css')}}">
 
 <!-- icon -->
-<link rel="shortcut icon" href="img/logo/logo-mpsc.png" type="image/x-icon">
+<link rel="shortcut icon" href="/img/logo/logo-mpsc.png" type="image/x-icon">
 
 <title>@yield('title-bar') | Manuscript Preservation and Study Center</title>
 

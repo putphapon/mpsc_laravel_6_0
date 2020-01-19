@@ -23,7 +23,8 @@
             <div class="modal fade" id="title-admin-form" tabindex="-1" role="dialog" aria-labelledby="title-admin-form" aria-hidden="true">
                 <div class="modal-dialog" role="document">
                     {{-- form --}}
-                    <form action="{{ route('title.store') }}" method="post" enctype="multipart/form-data">
+                    <form action="{{ action('AdminTitle@store') }}" method="post" enctype="multipart/form-data">
+                        @csrf @method('POST')
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h4 class="modal-title" id="title-admin-form"><i class="fa fa-plus-square-o" aria-hidden="true"></i>  เพิ่มข้อมูล</h4>
@@ -36,15 +37,14 @@
                                     <div class="col">
                                         {{--name --}}
                                         <div class="form-group">
-                                            <label for="titleImage">ชื่อภาพ</label>
-                                            <input type="text" name="titleImage" value="" class="form-control">
+                                            <label for="nameTitle">ชื่อภาพ</label>
+                                            <input type="text" name="nameTitle" value="" class="form-control">
                                         </div>
 
                                         {{-- image --}}
                                         <div class="form-group">
-                                            <label for="fileImage">รูปภาพ</label>                                                               
-                                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                            <input type="file" class="form-control-file"  name="fileImage" value="">
+                                            <label for="imageTitle">รูปภาพ</label>
+                                            <input type="file" class="form-control-file"  name="imageTitle" value="">
                                         </div>
                                     </div>
                                 </div>
@@ -86,13 +86,13 @@
                         {{-- No. --}}
                         <th scope="row">{{ $loop->iteration }}</th>
                         {{-- Name --}}
-                        <td>{{ $item['admin_titles_name'] }}</td>
+                        <td>{{ $item['title_name'] }}</td>
                         {{-- Image --}}
                         <td>                        
                             <img 
                             {{-- cut sting '/public/' --}}
-                            src="{{ asset('/storage/'.substr($item['admin_titles_image'],6)) }}" 
-                            alt="{{ $item['admin_titles_name'] }}"
+                            src="{{ asset('/storage/'.substr($item['title_image'],6)) }}" 
+                            alt="{{ $item['title_name'] }}"
                             class="rounded" style="height: 100px;">
                         </td>
                         {{-- Edit --}}
@@ -103,6 +103,7 @@
                                 <div class="modal-dialog" role="document">
                                     {{-- form --}}
                                     <form class="edit_form" action="{{ action('AdminTitle@update',$item['id']) }}" method="post" enctype="multipart/form-data">
+                                        @csrf @method('PUT')
                                         <div class="modal-content">
                                             <div class="modal-header">
                                                 <h4 class="modal-title" id="title-admin-form-edit"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>  แก้ไขข้อมูล</h4>
@@ -115,18 +116,17 @@
                                                     <div class="col">
                                                         {{--name --}}
                                                         <div class="form-group">
-                                                            <label for="titleImage">ชื่อภาพ</label>
-                                                            <input type="text" name="titleImage" value="{{ $item['admin_titles_name'] }}" class="form-control">
+                                                            <label for="nameTitle">ชื่อภาพ</label>
+                                                            <input type="text" name="nameTitle" value="{{ $item['title_name'] }}" class="form-control">
                                                         </div>
                                                         
                                                         {{-- image --}}
                                                         <div class="form-group">
-                                                            <label for="fileImage">รูปภาพ :: {{ substr($item['admin_titles_image'],11) }}</label>
-                                                            <input type="hidden" name="_method" value="PUT" > 
-                                                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                                            <input type="file" name="fileImage" value="" class="form-control-file">
-                                                            <img src="{{ asset('/storage/'.substr($item['admin_titles_image'],6)) }}" alt="{{ $item['admin_titles_name'] }}" class="rounded p-2 " style="height: 100px;">
+                                                            <label for="imageTitle">รูปภาพ :: {{ substr($item['title_image'],11) }}</label>
+                                                            <input type="file" name="imageTitle" value="" class="form-control-file">
+                                                            <img src="{{ asset('/storage/'.substr($item['title_image'],6)) }}" alt="{{ $item['title_name'] }}" class="rounded p-2 " style="height: 100px;">
                                                         </div>
+
                                                     </div>
                                                 </div>
                                             </div>
@@ -143,8 +143,7 @@
                         {{-- Delete --}}
                         <td>
                             <form class="delete_form" action="{{ action('AdminTitle@destroy',$item['id']) }}" method="post">
-                                {{ csrf_field() }}
-                                <input type="hidden" value="DELETE" name="_method">                            
+                                @csrf @method('DELETE')
                                 <button class="btn btn-danger btn-sm" type="submit" value="Submit"><i class="fa fa-trash-o" aria-hidden="true"></i>  ลบ</button>
                                 </form>
                             </td>

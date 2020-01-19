@@ -5,29 +5,31 @@
         </div>
 
         <!--  scholar -->
-        <div class="accordion" id="scholarList">
-            <div class="card">
-                <div class="card-header" id="">
-                    <h2 class="mb-0 text-decoration-none">
-                        <button class="btn btn-link collapse show" type="button" data-toggle="show" data-target="#" 
-                                aria-expanded="true"
-                                aria-controls="">
-                        </button>
-                    </h2>
-                </div>
-                <div id="" class="collapsed " aria-labelledby="" data-parent="#scholarList">
-                    <div class="card-body">"
-                        <a href="" class="text-decoration-none">
-                            <footer class="blockquote-footer"></footer>
-                        </a>
-                        <div class="text-right">
-                            <a href=" ">
-                                <p class="badge badge-pill badge-light"> read more </p>
-                            </a>
+        <div class="row">
+            @foreach ($scholar_category as $item)
+            <div class="col">
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="mb-0 text-decoration-none">
+                            <button class="btn btn-link collapse show" type="button">{{ $item->scholar_category_name }}</button>
+                        </h2>
+                    </div>
+                    <div class="collapsed">
+                        <div class="card-body">
+                            @foreach ($scholar_blog as $subitem)
+                                @if ($subitem->scholar_category_id == $item->id)
+                                    <a href="{{ $subitem->scholar_blog_link }}" target="blank" class="text-decoration-none">{{ $subitem->scholar_blog_name }}
+                                        <footer class="blockquote-footer">{{ $subitem->scholar_blog_author }}</footer>
+                                    </a>
+                                    <br>
+                                @endif
+                            @endforeach
                         </div>
                     </div>
                 </div>
             </div>
+            @endforeach
         </div>
+    
     </div>
 </section>

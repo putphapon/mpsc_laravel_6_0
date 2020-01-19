@@ -40,54 +40,6 @@ section {
     text-transform: uppercase;
 }
 
-
-/* coming soon */
-.flex-container {
-    height: 100vh;
-
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-
-    
-    background-image: url("../img/ลงทะเบียน\ \(77\).jpg (77).jpg");
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-}
-
-.flex-container img {
-    height: auto;
-    width: 30vmax;
-    margin-bottom: 30px;
-    text-align: center;
-    box-shadow:0px 0px 100px white; 
-}
-
-.flex-container p {
-    font-family: Prompt;
-    font-size: 1.8rem;
-    text-align: center;
-    
-    text-shadow:0px 0px 10px white;
-}
-
-.flex-container h1 {
-    font-size: 3ram;
-    text-transform: uppercase;
-    text-align: center;
-    z-index: 1;
-    
-    text-shadow:0px 0px 10px white;
-}
-
-.countdown {
-    background-color: bisque;
-    color: white;
-}
-
 /* nav */
 nav {
     max-height: 8ex;
@@ -159,14 +111,6 @@ nav a.dropdown-item:hover {
 /* title */
 .titleContainerCover {
     position: relative;
-}
-
-.flexTitleText {
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
-
-    min-height: 60vh;
 }
 
 

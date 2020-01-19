@@ -1,23 +1,25 @@
 <section id="shop">
-<div class="container">
-    <div class="row">
-        <h1 class="headerTitle">ร้านหนังสือ</h1>
-    </div>
+    <div class="container">
+        <div class="row">
+            <h1 class="headerTitle">ร้านหนังสือ</h1>
+        </div>
 
-    <!-- section content -->
-    <div class="row d-flex justify-content-center mt-3 mb-3">
-        <div class="card col-md-3 col-sm-12 cardShadow bg-white rounded">
-            <img src=" " class="img-thumbnail rounded" alt=" ">                    
+        <!-- section content -->
+        <div class="d-flex justify-content-around mt-3 mb-3">
+        @foreach ($shops as $item)
+            <div class="card col-md-3 col-sm-12 cardShadow bg-white rounded">
+            <img src="{{ asset('/storage/'.substr($item->shops_image,7)) }}" class="img-thumbnail rounded" alt="{{ $item->shops_name }}">                    
 
-            <div class="card-body text-center">
-                <a href=" " class="text-dark text-decoration-none" target="_blank">
-                    <h5 class="card-titlept-3 pb-3"><i class="fa fa-book"></i>  </h5>
-                </a>
-                <i class="fa fa-shopping-cart"></i>
+                <div class="card-body text-center">
+                    <a href="{{ $item->shops_link }}" class="text-dark text-decoration-none" target="_blank">
+                        <h5 class="card-titlept-3 pb-3">{{ $item->shops_name }}</h5>
+                        <i class="fa fa-book"> อ่าน</i>
+                    </a>
+                </div>
             </div>
+            @endforeach
         </div>
     </div>
-</div>
 </section>
 
 

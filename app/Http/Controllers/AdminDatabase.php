@@ -9,6 +9,16 @@ use App\AdminDatabaseModel;
 class AdminDatabase extends Controller
 {
     /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
@@ -16,7 +26,9 @@ class AdminDatabase extends Controller
     public function index()
     {
         //select
-        $data = AdminDatabaseModel::all()->toArray();
+        $data = AdminDatabaseModel::all()
+        ->sortByDesc('updated_at')
+        ->toArray();
 
         return view('admin.database-admin', compact('data'));
     }
@@ -42,21 +54,18 @@ class AdminDatabase extends Controller
         //validate
         $this->validate($request,
             [
-                'titleDatabase' => 'required'
+                'nameDatabase' => 'required',                
+                'linkDatabase' => 'required',                
+                'imageDatabase' => 'required'
             ]
         );
 
         //insert
         $data = new AdminDatabaseModel;
-        $data->admin_databases_name = $request->titleDatabase;
-
-        if(isset($request->linkDatabase)) {
-            $data->admin_databases_link = $request->linkDatabase;
-        }
-
-        if(isset($data->admin_databases_image)) {
-            $data->admin_databases_image = $request->file('imageDatabase')->store('public/img');
-        }
+        $data->database_name = $request->nameDatabase;
+        $data->database_link = $request->linkDatabase;
+        $data->database_image = $request->file('imageDatabase')->store('public/img');
+        
 
         //save
         $data->save();
@@ -98,18 +107,25 @@ class AdminDatabase extends Controller
         //validate
         $this->validate($request,
             [
-                'titleDatabase' => 'required',
-                'linkDatabase' => 'required',
-                'imageDatabase' => 'required'
+                'nameDatabase' => 'required',
+                'linkDatabase' => 'required'
             ]
         );
 
         //search form id
         $data = AdminDatabaseModel::find($id);
 
-        $data->admin_databases_name = $request->titleDatabase;
-        $data->admin_databases_link = $request->linkDatabase;
-        $data->admin_databases_image = $request->file('imageDatabase')->store('public/img');
+        $data->database_name = $request->nameDatabase;
+        $data->database_link = $request->linkDatabase;
+
+        //check image is null?
+        if($request->imageDatabase != null) {
+            //delete file
+            Storage::delete($data['image_image']);
+
+            //add file
+            $data->database_image = $request->file('imageDatabase')->store('public/img');
+        }
 
         //save
         $data->save();
@@ -129,7 +145,7 @@ class AdminDatabase extends Controller
         $data = AdminDatabaseModel::find($id);
 
         //delete file
-        Storage::delete($data['admin_database_image']);
+        Storage::delete($data['database_image']);
 
         //delete
         $data->delete();

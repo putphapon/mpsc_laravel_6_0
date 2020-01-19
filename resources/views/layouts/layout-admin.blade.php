@@ -30,8 +30,8 @@
 @yield('content')
 <br>
 
-<div class="fixed-bottom bg-secondary">
-<p class="footer text-light p-1 float-right"><small>Admin :: @yield('title-bar') | Manuscript Preservation and Study Center</small></p>
+<div class="fixed-bottom d-flex flex-row-reverse bg-secondary">
+    <p class="d-inline footer text-light p-1 float-right"><small>@yield('title-bar') | Manuscript Preservation and Study Center</small></p>
 </div>
 
 <!-- JavaScript -->

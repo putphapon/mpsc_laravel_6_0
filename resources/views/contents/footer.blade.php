@@ -6,10 +6,16 @@
             <div class="col-md-4 col-sm-12">
                 <p class="font-weight-bold text-uppercase">site map</p>
                 <div class="p-3 mb-5 rounded">
-                    <ul class="list-unstyled"> 
-                        <li>
-                            <a class="text-decoration-none" href=" "> </a>
-                        </li>         
+                    <ul class="list-unstyled">
+                        <li><a class="text-decoration-none" href="/">หน้าหลัก</a></li>
+                        <li><a class="text-decoration-none" href="{{ action('HomeAbout@index') }}">เกี่ยวกับ</a></li>
+                        <li><a class="text-decoration-none" href="{{ action('HomeDatabase@index') }}">ฐานข้อมูล</a></li>
+                        <li><a class="text-decoration-none" href="{{ action('HomeScholar@index') }}">บทความวิชาการ/งานวิจัย</a></li>
+                        <li><a class="text-decoration-none" href="{{ action('HomeManuscripts@index') }}">ธารความรู้</a></li>
+                        <li><a class="text-decoration-none" href="{{ action('HomeVdo@index') }}">สื่อ VDO</a></li>
+                        <li><a class="text-decoration-none" href="{{ action('HomeEvents@index') }}">กิจกรรม</a></li>
+                        <li><a class="text-decoration-none" href="{{ action('HomeShops@index') }}">ร้านหนังสือ</a></li>
+                        <li><a class="text-decoration-none" href="{{ action('HomeContact@index') }}">ติดต่อเรา</a></li>
                     </ul>
                 </div>
             </div>
@@ -39,10 +45,11 @@
 
 
     <!-- copyrigth -->
-    <div class="d-flex justify-content-center pb-3">
+    <div class="d-flex justify-content-center flex-column  pb-3">
         <p class="h6">
             <i class="fa fa-copyright"></i>
             {{ date("Y") }} - {{ date("Y")+1 }}  All Rights Reserved
         </p>
+        <a href="/admin" class="text-decoration-none"><small>เข้าสู่ระบบ</small></a>
     </div>
 </section>

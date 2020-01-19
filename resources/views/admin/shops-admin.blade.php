@@ -22,7 +22,8 @@
             <div class="modal fade" id="shops-admin-form" tabindex="-1" role="dialog" aria-labelledby="shops-admin-form" aria-hidden="true">
                 <div class="modal-dialog" role="document">
                     {{-- form --}}
-                    <form action="{{ '' }}" method="post" enctype="multipart/form-data">
+                    <form action="{{ action('AdminShops@store') }}" method="post" enctype="multipart/form-data">
+                        @csrf @method('POST')
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h4 class="modal-title" id="shops-admin-form"><i class="fa fa-plus-square-o" aria-hidden="true"></i>  เพิ่มข้อมูล</h4>
@@ -41,8 +42,7 @@
 
                                         {{-- image --}}
                                         <div class="form-group">
-                                            <label for="imageShops">รูปภาพ</label>                                                               
-                                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                            <label for="imageShops">รูปภาพ</label>
                                             <input type="file" class="form-control-file"  name="imageShops" value="">
                                         </div>
 
@@ -50,6 +50,7 @@
                                         <div class="form-group">
                                             <label for="linkShops">link อ่านหนังสือ</label>
                                             <input type="text" name="linkShops" value="" class="form-control">
+                                            <small class="form-text text-muted">ใส่เครื่องหมาย # ถ้ายังไม่มีลิงก์</small>
                                         </div>
                                     </div>
                                 </div>
@@ -87,36 +88,38 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {{-- @foreach ($data as $item)  --}}
+                    @foreach ($data as $item) 
                     <tr>
-                        {{-- No. $loop->iteration --}}
-                        <th scope="row">{{ '' }}</th>
+                        {{-- No.  --}}
+                        <th scope="row">{{ $loop->iteration }}</th>
                         {{-- Name --}}
-                        <td>{{ '' }}</td>
+                        <td>{{ $item['shops_name'] }}</td>
                         {{-- Image --}}
                         <td>                        
                             <img 
                             {{-- cut sting '/public/' --}}
-                            src="{{ '' }}" 
-                            alt="{{ '' }}"
+                            src="{{ asset('/storage/'.substr($item['shops_image'],6)) }}" 
+                            alt="{{ $item['shops_name']}}"
                             class="rounded" style="height: 100px;">
                         </td>
 
                         {{-- Link --}}
-                            {{-- @if( $item['linkShops']) ถ้าไฟล์--}}
-                        <td><i class="fa fa-check bg-success p-1" aria-hidden="true"></i>
-                            {{-- @else --}}
-                            <i class="fa fa-close bg-danger p-1" aria-hidden="true"></i></td>
-                            {{-- @endif --}}
-
+                        <td>
+                            @if( $item['shops_link'] != "#")
+                                <a href="{{$item['shops_link']}}" target="blank"><span class="badge badge-pill badge-success"><i class="fa fa-check p-1" aria-hidden="true"></i></span></a>
+                            @else
+                                <span class="badge badge-pill badge-danger"><i class="fa fa-close p-1" aria-hidden="true"></i></span>
+                            @endif
+                        </td>
                         {{-- Edit --}}
                         <td>
-                        <button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#shops-admin-form-edit-{{ '' }}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>  แก้ไข</button>
+                        <button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#shops-admin-form-edit-{{$item['id']}}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>  แก้ไข</button>
                             {{-- Modal Edit --}}
-                            <div class="modal fade" id="shops-admin-form-edit-{{ '' }}" tabindex="-1" role="dialog" aria-labelledby="shops-admin-form-edit" aria-hidden="true">
+                            <div class="modal fade" id="shops-admin-form-edit-{{$item['id']}}" tabindex="-1" role="dialog" aria-labelledby="shops-admin-form-edit" aria-hidden="true">
                                 <div class="modal-dialog" role="document">
                                     {{-- form --}}
-                                    <form class="edit_form" action="{{ '' }}" method="post" enctype="multipart/form-data">
+                                    <form class="edit_form" action="{{ action('AdminShops@update',$item['id']) }}" method="post" enctype="multipart/form-data">
+                                        @csrf @method('PUT')
                                         <div class="modal-content">
                                             <div class="modal-header">
                                                 <h4 class="modal-title" id="shops-admin-form-edit"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>  แก้ไขข้อมูล</h4>
@@ -130,22 +133,21 @@
                                                         {{--name --}}
                                                         <div class="form-group">
                                                             <label for="nameShops">ชื่อหนังสือ</label>
-                                                            <input type="text" name="nameShops" value="{{ '' }}" class="form-control">
+                                                            <input type="text" name="nameShops" value="{{ $item['shops_name'] }}" class="form-control">
                                                         </div>
                                                         
                                                         {{-- image --}}
                                                         <div class="form-group">
-                                                            <label for="imageShops">รูปภาพ :: {{ '' }}</label>
-                                                            <input type="hidden" name="_method" value="PUT" > 
-                                                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                                            <label for="imageShops">รูปภาพ :: {{ substr($item['shops_image'],11) }}</label>
                                                             <input type="file" name="imageShops" value="" class="form-control-file">
-                                                            <img src="{{ '' }}" alt="{{ '' }}" class="rounded p-2 " style="height: 100px;">
+                                                            <img src="{{ asset('/storage/'.substr($item['shops_image'],6)) }}" alt="{{ $item['shops_name'] }}" class="rounded p-2 " style="height: 100px;">
                                                         </div>
 
                                                         {{--link --}}
                                                         <div class="form-group">
                                                             <label for="linkShops">link อ่านหนังสือ</label>
-                                                            <input type="text" name="linkShops" value="{{ '' }}" class="form-control">
+                                                            <input type="text" name="linkShops" value="{{ $item['shops_link'] }}" class="form-control">
+                                                            <small class="form-text text-muted">ใส่เครื่องหมาย # ถ้ายังไม่มีลิงก์</small>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -156,20 +158,19 @@
                                                 <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-window-close-o" aria-hidden="true"></i>  ปิด</button>
                                             </div>
                                         </div>
-                                    </form>
+                                    </form> 
                                 </div>
                             </div>
                         </td>
                         {{-- Delete --}}
                         <td>
-                            <form class="delete_form" action="{{ '' }}" method="post">
-                                {{ csrf_field() }}
-                                <input type="hidden" value="DELETE" name="_method">                            
+                            <form class="delete_form" action="{{ action('AdminShops@destroy',$item['id']) }}" method="post">
+                                @csrf @method('DELETE')                        
                                 <button class="btn btn-danger btn-sm" type="submit" value="Submit"><i class="fa fa-trash-o" aria-hidden="true"></i>  ลบ</button>
                                 </form>
                             </td>
                         </tr>
-                    {{-- @endforeach --}}
+                    @endforeach
                 </tbody>
             </table>
         </div>

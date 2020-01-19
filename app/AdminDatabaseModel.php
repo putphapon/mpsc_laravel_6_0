@@ -11,11 +11,11 @@ class AdminDatabaseModel extends Model
      *
      * @var string
      */
-    protected $table = 'admin_databases';
+    protected $table = 'database';
 
     protected $fillable = [
-        'admin_databases_name',
-        'admin_databases_image',
-        'admin_databases_link'
+        'database_name',
+        'database_image',
+        'database_link'
     ];
 }

@@ -11,10 +11,10 @@ class AdminTitleModel extends Model
      *
      * @var string
      */
-    protected $table = 'admin_titles';
+    protected $table = 'title';
 
     protected $fillable = [
-        'admin_titles_name',
-        'admin_titles_image'
+        'title_name',
+        'title_image'
     ];
 }

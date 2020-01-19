@@ -10,7 +10,7 @@
             <h1 class="bg-primary text-light rounded p-2">กิจกรรม</h1>
         </div>
     </div>
-    <br>
+    <br> 
 
     {{-- alert --}}
     @include('layouts.alert-admin')
@@ -22,7 +22,8 @@
             <div class="modal fade" id="admin-events-form" tabindex="-1" role="dialog" aria-labelledby="admin-events-form" aria-hidden="true">
                 <div class="modal-dialog" role="document">
                     {{-- form --}}
-                    <form action="{{ '' }}" method="post" enctype="multipart/form-data">
+                    <form action="{{ action('AdminEvents@store') }}" method="post" enctype="multipart/form-data">
+                        @csrf @method('POST')
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h4 class="modal-title" id="admin-events-form"><i class="fa fa-plus-square-o" aria-hidden="true"></i>  เพิ่มข้อมูล<h4>
@@ -42,8 +43,7 @@
 
                                         {{-- image --}}
                                         <div class="form-group">
-                                            <label for="imageEvents">รูปภาพ</label>                                                               
-                                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                            <label for="imageEvents">รูปภาพ</label> 
                                             <input type="file" class="form-control-file"  name="imageEvents" value="">
                                         </div>
                                         
@@ -57,19 +57,22 @@
                                         <div class="form-group">
                                             <label for="whereEvents">สถานที่</label>
                                             <input type="text" name="whereEvents" value="" class="form-control">
+                                            <small class="form-text text-muted">ใส่เครื่องหมาย # ถ้ายังไม่มีลิงก์</small>
                                         </div>
 
                                         {{-- Register --}}
                                         <div class="form-group">
-                                            <label for="regLinkEvents">link ลงทะเบียน</label>
-                                            <input type="text" name="regLinkEvents" value="" class="form-control">
+                                            <label for="linkRegEvents">link ลงทะเบียน</label>
+                                            <input type="text" name="linkRegEvents" value="" class="form-control">
+                                            <small class="form-text text-muted">ใส่เครื่องหมาย # ถ้ายังไม่มีลิงก์</small>
                                         </div>
 
                                         {{-- link image Google Drive --}}
                                         <div class="form-group">
-                                            <label for="imageLinkEvents">link แฟ้มรูปภาพ</label>
-                                            <input type="text" name="imageLinkEvents" value="" class="form-control">                                    
-                                            <small class="form-text text-muted">ลิ้งค์แชร์แฟ้มรูปภาพ จาก Google Drive (*อย่าลืมเปิดแชร์แฟ้มก่อนนำมากรอกลงฟอร์ม)</small>                                            
+                                            <label for="linkImageEvents">link แฟ้มรูปภาพ</label>
+                                            <input type="text" name="linkImageEvents" value="" class="form-control">                                    
+                                            <small class="form-text text-muted">ลิงก์แชร์แฟ้มรูปภาพ จาก Google Drive (*อย่าลืมเปิดแชร์แฟ้มก่อนนำมากรอกลงฟอร์ม)</small> 
+                                            <small class="form-text text-muted">ใส่เครื่องหมาย # ถ้ายังไม่มีลิงก์</small>                                           
                                         </div>
                                     </div>
                                 </div>
@@ -111,46 +114,51 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {{-- @foreach ($data as $item)  --}}
+                    @foreach ($data as $item) 
                     <tr>
-                        {{-- No. $loop->iteration--}}
-                        <th scope="row">{{ '' }}</th>
+                        {{-- No. --}}
+                        <th scope="row">{{ $loop->iteration }}</th>
                         {{-- Name --}}
-                        <td>{{ '' }}</td>
+                        <td>{{ $item['events_name'] }}</td>
                         {{-- Image --}}
                         <td>                        
                             <img 
                             {{-- cut sting '/public/' --}}
-                            src="{{ '' }}" 
-                            alt="{{ '' }}"
+                            src="{{ asset('/storage/'.substr($item['events_image'],6)) }}" 
+                            alt="{{ $item['events_name'] }}"
                             class="rounded" style="height: 100px;">
                         </td>
                         {{-- Date --}}
-                        <td>{{ '' }}</td>
+                        <td>{{ $item['events_date'] }}</td>
                         {{-- Where --}}
-                        <td>{{ '' }}</td>
+                        <td>{{ $item['events_where'] }}</td>
                         {{-- Register --}}
-                            {{-- @if( $item['regLinkEvents']) ถ้าไฟล์--}}
-                            <td><i class="fa fa-check bg-success p-1" aria-hidden="true"></i>
-                            {{-- @else --}}
-                            <i class="fa fa-close bg-danger p-1" aria-hidden="true"></i></td>
-                            {{-- @endif --}}
+                        <td>
+                            @if($item['events_linkReg'] != "#")
+                                <a href="{{$item['events_linkReg']}}" target="blank"><span class="badge badge-pill badge-success"><i class="fa fa-check p-1" aria-hidden="true"></i></a></span>
+                            @else
+                                <span class="badge badge-pill badge-danger"><i class="fa fa-close p-1" aria-hidden="true"></i></span>
+                            @endif
+                        </td>
 
                         {{-- link image Google Drive --}}
-                            {{-- @if( $item['imageLinkEvents']) ถ้าไฟล์--}}
-                            <td><i class="fa fa-check bg-success p-1" aria-hidden="true"></i>
-                            {{-- @else --}}
-                            <i class="fa fa-close bg-danger p-1" aria-hidden="true"></i></td>
-                            {{-- @endif --}}
+                        <td>
+                            @if($item['events_linkImage'] != "#")
+                                <a href="{{$item['events_linkImage']}}" target="blank"><span class="badge badge-pill badge-success"><i class="fa fa-check p-1" aria-hidden="true"></i></a></span>
+                            @else
+                                <span class="badge badge-pill badge-danger"><i class="fa fa-close p-1" aria-hidden="true"></i></span>
+                            @endif
+                        </td>
 
                         {{-- Edit --}}
                         <td>
-                        <button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#admin-events-form-edit-{{''}}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>  แก้ไข</button>
+                        <button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#admin-events-form-edit-{{ $item['id'] }}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>  แก้ไข</button>
                             {{-- Modal Edit --}}
-                            <div class="modal fade" id="admin-events-form-edit-{{''}}" tabindex="-1" role="dialog" aria-labelledby="admin-events-form-edit" aria-hidden="true">
+                            <div class="modal fade" id="admin-events-form-edit-{{ $item['id'] }}" tabindex="-1" role="dialog" aria-labelledby="admin-events-form-edit" aria-hidden="true">
                                 <div class="modal-dialog" role="document">
                                     {{-- form --}}
-                                    <form action="{{ '' }}" method="post" enctype="multipart/form-data">
+                                    <form action="{{ action('AdminEvents@update',$item['id']) }}" method="post" enctype="multipart/form-data">
+                                        @csrf @method('PUT')
                                         <div class="modal-content">
                                             <div class="modal-header">
                                                 <h4 class="modal-title" id="admin-events-form-edit"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>  แก้ไข ข้อมูล</h4>
@@ -165,41 +173,42 @@
                                                         {{-- name --}}
                                                         <div class="form-group">
                                                             <label for="nameEvents">ชื่อกิจกรรม</label>
-                                                            <input type="text" name="nameEvents" value="{{ '' }}" class="form-control">
+                                                            <input type="text" name="nameEvents" value="{{ $item['events_name'] }}" class="form-control">
                                                         </div>
 
                                                         {{-- image --}}
                                                         <div class="form-group">
-                                                            <label for="imageEvents">รูปภาพ :: {{ '' }}</label>
-                                                            <input type="hidden" name="_method" value="PUT" > 
-                                                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                                            <label for="imageEvents">รูปภาพ :: {{ substr($item['events_image'],11) }}</label>
                                                             <input type="file" name="imageEvents" value="" class="form-control-file">
-                                                            <img src="{{ '' }}" alt="{{ '' }}" class="rounded p-2 " style="height: 100px;">
+                                                            <img src="{{ asset('/storage/'.substr($item['events_image'],6)) }}" alt="{{ $item['events_name'] }}" class="rounded p-2 " style="height: 100px;">
                                                         </div> 
                                                         
                                                         {{-- Date --}}
                                                         <div class="form-group">
                                                             <label for="dateEvents">วันที่</label>
-                                                            <input type="date" name="dateEvents" value="{{ '' }}" class="form-control">
+                                                            <input type="date" name="dateEvents" value="{{ $item['events_date'] }}" class="form-control">
                                                         </div>
 
                                                         {{-- Where --}}
                                                         <div class="form-group">
                                                             <label for="whereEvents">สถานที่</label>
-                                                            <input type="text" name="whereEvents" value="{{ '' }}" class="form-control">
+                                                            <input type="text" name="whereEvents" value="{{ $item['events_where'] }}" class="form-control">
+                                                            <small class="form-text text-muted">ใส่เครื่องหมาย # ถ้ายังไม่มีลิงก์</small>
                                                         </div>
 
                                                         {{-- Register --}}
                                                         <div class="form-group">
-                                                            <label for="regLinkEvents">link ลงทะเบียน</label>
-                                                            <input type="text" name="regLinkEvents" value="{{ '' }}" class="form-control">
+                                                            <label for="linkRegEvents">link ลงทะเบียน</label>
+                                                            <input type="text" name="linkRegEvents" value="{{ $item['events_linkReg'] }}" class="form-control">
+                                                            <small class="form-text text-muted">ใส่เครื่องหมาย # ถ้ายังไม่มีลิงก์</small>
                                                         </div>
 
                                                         {{-- link image Google Drive --}}
                                                         <div class="form-group">
-                                                            <label for="imageLinkEvents">link แฟ้มรูปภาพ</label>
-                                                            <input type="text" name="imageLinkEvents" value="{{ '' }}" class="form-control">                                    
-                                                            <small class="form-text text-muted">ลิ้งค์แชร์แฟ้มรูปภาพ จาก Google Drive (*อย่าลืมเปิดแชร์แฟ้มก่อนนำมากรอกลงฟอร์ม)</small>                                            
+                                                            <label for="linkImageEvents">link แฟ้มรูปภาพ</label>
+                                                            <input type="text" name="linkImageEvents" value="{{ $item['events_linkImage'] }}" class="form-control">                                    
+                                                            <small class="form-text text-muted">ลิงก์แชร์แฟ้มรูปภาพ จาก Google Drive (*อย่าลืมเปิดแชร์แฟ้มก่อนนำมากรอกลงฟอร์ม)</small> 
+                                                            <small class="form-text text-muted">ใส่เครื่องหมาย # ถ้ายังไม่มีลิงก์</small>                                           
                                                         </div>                                                                  
                                                     </div>
                                                 </div>
@@ -217,14 +226,13 @@
                         </td>
                         {{-- Delete --}}
                         <td>
-                            <form class="delete_form" action="{{ '' }}" method="post">
-                                {{ csrf_field() }}
-                                <input type="hidden" value="DELETE" name="_method">                            
+                            <form class="delete_form" action="{{ action('AdminEvents@destroy',$item['id']) }}" method="post">
+                                @csrf @method('DELETE')                         
                                 <button class="btn btn-danger btn-sm" type="submit" value="Submit"><i class="fa fa-trash-o" aria-hidden="true"></i>  ลบ</button>
-                                </form>
-                            </td>
-                        </tr>
-                    {{-- @endforeach --}}
+                            </form>
+                        </td>
+                    </tr>
+                    @endforeach
                 </tbody>
             </table>
         </div>

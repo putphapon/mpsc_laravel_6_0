@@ -11,46 +11,41 @@
 |
 */
 
-use App\Http\Controllers\Home;
-use App\Http\Controllers\Admin;
-use App\Http\Controllers\AdminTitle;
 
 //Home
 Route::get('/', 'Home@Home');
 
 //About
-Route::get('/about', 'Home@About');
-Route::get('/board', 'Home@AboutBoard');
-Route::get('/objective', 'Home@AboutObjective');
+Route::resource('/about', 'HomeAbout');
+Route::resource('/objective', 'HomeAboutObjective');
+Route::resource('/board', 'HomeAboutBoard');
 
 //Database
-Route::get('/database', 'Home@Database');
+Route::resource('/database', 'HomeDatabase');
 
 //Scholar
-Route::get('/scholar', 'Home@Scholar');
+Route::resource('/scholar', 'HomeScholar');
 
 //Manuscripts
-Route::get('/manuscripts', 'Home@Manuscripts');
-Route::get('/manuscripts-tag', 'Home@ManuscriptsTag');
-Route::get('/manuscripts-content', 'Home@ManuscriptsContent');
-
+Route::resource('/manuscripts', 'HomeManuscripts');
+Route::resource('/manuscriptscategory', 'HomeManuscriptsCategory');
+Route::resource('/manuscriptsblog', 'HomeManuscriptsBlog');
 
 //VDO
-Route::get('/vdo', 'Home@Vdo');
+Route::resource('/vdo', 'HomeVdo');
 
 //Events
-Route::get('/events', 'Home@Events');
+Route::resource('/events', 'HomeEvents');
 
 //Shop
-Route::get('/shops', 'Home@Shops');
+Route::resource('/shops', 'HomeShops');
 
 //Contact
-Route::get('/contact', 'Home@Contact');
+Route::resource('/contact', 'HomeContact');
 
 
 
 //Admin
-
 //title
 Route::resource('/admin/title', 'AdminTitle');
 
@@ -62,6 +57,8 @@ Route::resource('/admin/database', 'AdminDatabase');
 
 //Scholar
 Route::resource('/admin/scholar', 'AdminScholar');
+Route::resource('/admin/scholarcategory', 'AdminScholarCategory');
+Route::resource('/admin/scholarblog', 'AdminScholarBlog');
 
 //Manuscripts
 Route::resource('/admin/manuscripts', 'AdminManuscripts');
@@ -79,3 +76,7 @@ Route::resource('/admin/shops', 'AdminShops');
 
 //Contact
 Route::resource('/admin/contact', 'AdminContact');
+
+Auth::routes();
+
+Route::get('admin', 'HomeController@index')->name('home');

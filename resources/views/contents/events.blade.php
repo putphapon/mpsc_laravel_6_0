@@ -1,34 +1,34 @@
 <section id="events">
-<div class="container">
-    <div class="row">
-        <h1 class="headerTitle">กิจกรรม</h1>
-    </div>
+    <div class="container">
+        <div class="row">
+            <h1 class="headerTitle">กิจกรรม</h1>
+        </div>
 
 
-    <!-- section content -->
-    <div class="row mt-3 mb-3">
-        <div class="d-flex justify-content-center col-md-4 col-sm-12 pt-2 pb-2">
-            <div class="card cardShadow cardPosition mb-5 bg-white rounded">
-                <img src=" " class="card-img-top" alt=" ">
-                <div class="card-body">
-                    <h5 class="card-title"> </h5>
-                    <p class="card-text text-muted"> </p>
-                    <p class="card-text text-muted"> </p>
-
-                        <a href=" " class="btn btn-danger btn-block">
-                        <i class="fa fa-pen-square"></i>
-                        ลงทะเบียน
-                        </a>
-                        
-                        <a href=" " class="btn btn-light btn-block">
-                            <i class="fa fa-image"></i>
-                        ประมวลภาพ
-                        </a>
+        <!-- section content -->
+        <div class="row mt-3 mb-3">
+            @foreach ($events as $item)    
+                <div class="d-flex justify-content-around col-md-4 col-sm-12">
+                    <div class="card cardShadow cardPosition mb-5 bg-white rounded">
+                        <img src="{{ asset('/storage/'.substr($item->events_image,7)) }}" class="card-img-top" alt=" ">
+                        <div class="card-body">
+                            <h5 class="card-title"> </h5>
+                                <p class="card-text text-muted">วันที่ {{ $item->events_date}}</p>
+                                <p class="card-text text-muted">{{ $item->events_where }}</p>                        
+                                
+                                @if (date($item->events_date) >= date("Y-m-d") && $item->events_linkReg != '#')
+                                    <a href="{{$item->events_linkReg}}" class="btn btn-outline-danger btn-block">ลงทะเบียน</a>
+                                @elseif ($item->events_linkImage != '#')
+                                    <a href="{{$item->events_linkImage}}" class="btn btn-outline-info btn-block">ประมวลภาพ</a>
+                                @else
+                                    {{-- <a class="btn btn-outline-light btn-block"></i></a> --}}
+                                @endif
+                        </div>
+                    </div>
                 </div>
-            </div>
+            @endforeach
         </div>
     </div>
-</div>
 </section>
 
 

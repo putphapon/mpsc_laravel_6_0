@@ -4,10 +4,20 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use App\AdminTitleModel;
+use App\AdminTitleModel; 
 
 class AdminTitle extends Controller
 {
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -16,7 +26,9 @@ class AdminTitle extends Controller
     public function index()
     {
         //select
-        $data = AdminTitleModel::all()->toArray();
+        $data = AdminTitleModel::all()
+                ->sortByDesc('updated_at')
+                ->toArray();
 
         return view('admin.title-admin', compact('data'));
     }
@@ -42,15 +54,15 @@ class AdminTitle extends Controller
         //validate
         $this->validate($request,
             [
-                'titleImage' => 'required',
-                'fileImage' => 'required'
+                'nameTitle' => 'required',
+                'imageTitle' => 'required'
             ]
         );
 
         //insert
         $data = new AdminTitleModel;
-        $data->admin_titles_name = $request->titleImage;
-        $data->admin_titles_image = $request->file('fileImage')->store('public/img');
+        $data->title_name = $request->nameTitle;
+        $data->title_image = $request->file('imageTitle')->store('public/img');
 
         //save
         $data->save();
@@ -92,16 +104,21 @@ class AdminTitle extends Controller
         //validate
         $this->validate($request,
             [
-                'titleImage' => 'required'
+                'nameTitle' => 'required'
             ]
         );
 
         //search form id
         $data = AdminTitleModel::find($id);
 
-        $data->admin_titles_name = $request->titleImage;
-        if(!isset($data->admin_titles_image)) {
-            $data->admin_titles_image = $request->file('fileImage')->store('public/img');
+        $data->title_name = $request->nameTitle;
+        
+        //check image is null?
+        if($request->imageTitle != null) {
+            //delete file
+            Storage::delete($data['title_image']);
+            //add file
+            $data->title_image = $request->file('imageTitle')->store('public/img');
         }
 
         //save
@@ -122,7 +139,7 @@ class AdminTitle extends Controller
         $data = AdminTitleModel::find($id);
 
         //delete file
-        Storage::delete($data['admin_titles_image']);
+        Storage::delete($data['title_image']);
 
         //delete
         $data->delete();

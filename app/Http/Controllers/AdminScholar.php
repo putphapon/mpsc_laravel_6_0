@@ -3,9 +3,23 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use App\Http\Controllers\DB;
+use App\AdminScholarCategoryModel; 
+use App\AdminScholarBlogModel; 
 
 class AdminScholar extends Controller
 {
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -13,8 +27,15 @@ class AdminScholar extends Controller
      */
     public function index()
     {
-        //
-        return view('admin.scholar-admin');
+        //select
+        $dataScholarCategory = AdminScholarCategoryModel::all()
+                                    ->sortByDesc('updated_at')
+                                    ->toArray();
+        $dataScholarBlog = AdminScholarBlogModel::all()
+                                    ->sortByDesc('updated_at')
+                                    ->toArray();
+
+        return view('admin.scholar-admin', compact('dataScholarCategory','dataScholarBlog'));
     }
 
     /**

@@ -22,7 +22,8 @@
             <div class="modal fade" id="admin-vdo-form" tabindex="-1" role="dialog" aria-labelledby="admin-vdo-form" aria-hidden="true">
                 <div class="modal-dialog" role="document">
                     {{-- form --}}
-                    <form action="{{ '' }}" method="post" enctype="multipart/form-data">
+                    <form action="{{ action('AdminVDO@store') }}" method="post" enctype="multipart/form-data">
+                        @csrf @method('POST')
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h4 class="modal-title" id="admin-vdo-form"><i class="fa fa-plus-square-o" aria-hidden="true"></i>  เพิ่มข้อมูล<h4>
@@ -34,18 +35,21 @@
                             <div class="modal-body">
                                 <div class="row">
                                     <div class="col">
+                                        {{-- name --}}
                                         <div class="form-group">
                                             <label for="nameVDO">ชื่อเรื่อง</label>
                                             <input type="text" name="nameVDO" value="" class="form-control">
                                         </div>
 
+                                        {{-- detail --}}
                                         <div class="form-group">
-                                            <label for="detialVDO">คำเกริ่น</label>
-                                            <textarea name="detialVDO" value="" class="form-control" row="5"></textarea>
+                                            <label for="detailVDO">คำเกริ่น</label>
+                                            <textarea name="detailVDO" value="" class="form-control" row="5"></textarea>
                                         </div>
 
+                                        {{-- link --}}
                                         <div class="form-group">
-                                            <label for="linkVDO">ลิ้งค์ VDO Youtube</label>
+                                            <label for="linkVDO">ลิงก์ VDO Youtube</label>
                                             <input type="text" name="linkVDO" value="" class="form-control">                                    
                                             <small class="form-text text-muted">เข้า Youtube แล้วไปที่ Share -> Embed ก๊อปปี้ข้อความนี้มากรอกลง<br>'https://www.youtube.com/embed/xxxxxxxxxx'</small>
                                         </div>
@@ -80,36 +84,38 @@
                         <th scope="col">#</th>
                         <th scope="col">ชื่อเรื่อง</th>
                         <th scope="col">คำเกริ่น</th>
-                        <th scope="col">ลิ้งค์ VDO Youtube</th>
+                        <th scope="col">ลิงก์ VDO Youtube</th>
                         <th scope="col">แก้ไข</th>
                         <th scope="col">ลบ</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {{-- @foreach ($data as $item)  --}}
+                    @foreach ($data as $item) 
                     <tr>
-                        {{-- No. $loop->iteration--}}
-                        <th scope="row">{{ '' }}</th>
+                        {{-- No. --}}
+                        <th scope="row">{{ $loop->iteration }}</th>
                         {{-- Name --}}
-                        <td>{{ '' }}</td>
-                        {{-- Detial --}}
-                        <td>{{ '' }}</td>
+                        <td>{{ $item['vdo_name'] }}</td>
+                        {{-- detail --}}
+                        <td>{{ $item['vdo_detail'] }}</td>
 
                         {{-- Link --}}
-                            {{-- @if( $item['linkVDO']) ถ้าไฟล์--}}
-                        <td><i class="fa fa-check bg-success p-1" aria-hidden="true"></i>
-                        {{-- @else --}}
-                        <i class="fa fa-close bg-danger p-1" aria-hidden="true"></i></td>
-                        {{-- @endif --}}
-
+                        <td>
+                            @if($item['vdo_link'])
+                                <span class="badge badge-pill badge-success"><i class="fa fa-check p-1" aria-hidden="true"></i></span>
+                            @else
+                                <span class="badge badge-pill badge-danger"><i class="fa fa-close p-1" aria-hidden="true"></i></span>
+                            @endif
+                        </td>
                         {{-- Edit --}}
                         <td>
-                        <button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#admin-vdo-form-edit-{{''}}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>  แก้ไข</button>
+                        <button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#admin-vdo-form-edit-{{ $item['id'] }}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>  แก้ไข</button>
                             {{-- Modal Edit --}}
-                            <div class="modal fade" id="admin-vdo-form-edit-{{''}}" tabindex="-1" role="dialog" aria-labelledby="admin-vdo-form-edit" aria-hidden="true">
+                            <div class="modal fade" id="admin-vdo-form-edit-{{ $item['id'] }}" tabindex="-1" role="dialog" aria-labelledby="admin-vdo-form-edit" aria-hidden="true">
                                 <div class="modal-dialog" role="document">
                                     {{-- form --}}
-                                    <form action="{{ '' }}" method="post" enctype="multipart/form-data">
+                                    <form action="{{ action('AdminVDO@update',$item['id']) }}" method="post" enctype="multipart/form-data">
+                                        @csrf @method('PUT')
                                         <div class="modal-content">
                                             <div class="modal-header">
                                                 <h4 class="modal-title" id="admin-vdo-form-edit"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>  แก้ไข ข้อมูล</h4>
@@ -121,19 +127,22 @@
                                             <div class="modal-body">
                                                 <div class="row">
                                                     <div class="col">
+                                                        {{-- name --}}
                                                         <div class="form-group">
                                                             <label for="nameVDO">ชื่อเรื่อง</label>
-                                                            <input type="text" name="nameVDO" value="{{ '' }}" class="form-control">
+                                                            <input type="text" name="nameVDO" value="{{ $item['vdo_name'] }}" class="form-control">
                                                         </div>
 
+                                                        {{-- detail --}}
                                                         <div class="form-group">
-                                                            <label for="detialVDO">คำเกริ่น</label>
-                                                            <textarea name="detialVDO" value="{{ '' }}" class="form-control" row="5"></textarea>
+                                                            <label for="detailVDO">คำเกริ่น</label>
+                                                            <textarea name="detailVDO" value="" class="form-control" row="5">{{ $item['vdo_detail'] }}</textarea>
                                                         </div>
 
+                                                        {{-- link --}}
                                                         <div class="form-group">
-                                                            <label for="linkVDO">ลิ้งค์ VDO Youtube</label>
-                                                            <input type="text" name="linkVDO" value="{{ '' }}" class="form-control">                                    
+                                                            <label for="linkVDO">ลิงก์ VDO Youtube</label>
+                                                            <input type="text" name="linkVDO" value="{{  $item['vdo_link'] }}" class="form-control">                                    
                                                             <small class="form-text text-muted">เข้า Youtube แล้วไปที่ Share -> Embed ก๊อปปี้ข้อความนี้มากรอกลง<br>'https://www.youtube.com/embed/xxxxxxxxxx'</small>
                                                         </div>                                                                    
                                                     </div>
@@ -152,14 +161,13 @@
                         </td>
                         {{-- Delete --}}
                         <td>
-                            <form class="delete_form" action="{{ '' }}" method="post">
-                                {{ csrf_field() }}
-                                <input type="hidden" value="DELETE" name="_method">                            
+                            <form class="delete_form" action="{{ action('AdminVDO@destroy',$item['id']) }}" method="post">
+                                @csrf @method('DELETE')                          
                                 <button class="btn btn-danger btn-sm" type="submit" value="Submit"><i class="fa fa-trash-o" aria-hidden="true"></i>  ลบ</button>
                                 </form>
                             </td>
                         </tr>
-                    {{-- @endforeach --}}
+                    @endforeach
                 </tbody>
             </table>
         </div>

@@ -23,7 +23,8 @@
             <div class="modal fade" id="admin-database-form" tabindex="-1" role="dialog" aria-labelledby="admin-database-form" aria-hidden="true">
                 <div class="modal-dialog" role="document">
                     {{-- form --}}
-                    <form action="{{ route('database.store') }}" method="post" enctype="multipart/form-data">
+                    <form action="{{ action('AdminDatabase@store') }}" method="post" enctype="multipart/form-data">
+                        @csrf @method('POST')
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h4 class="modal-title" id="admin-database-form"><i class="fa fa-plus-square-o" aria-hidden="true"></i>  เพิ่มข้อมูล<h4>
@@ -36,20 +37,20 @@
                                     <div class="col">
                                         {{-- name --}}
                                         <div class="form-group">
-                                            <label for="titleDatabase">ชื่อฐานข้อมูล</label>
-                                            <input type="text" name="titleDatabase" value="" class="form-control">
+                                            <label for="nameeDatabase">ชื่อฐานข้อมูล</label>
+                                            <input type="text" name="nameDatabase" value="" class="form-control">
                                         </div>
 
                                         {{-- link --}}
                                         <div class="form-group">
                                             <label for="linkDatabase">URL ฐานข้อมูล</label>
-                                            <input type="text" name="linkDatabase" value="" class="form-control">
+                                            <input type="text" name="linkDatabase" value="" class="form-control">                                   
+                                            <small class="form-text text-muted">ใส่เครื่องหมาย # ถ้ายังไม่มีลิงก์</small>
                                         </div>
 
                                         {{-- image --}}
                                         <div class="form-group">
-                                            <label for="imageDatabase">รูปภาพโลโก้ ฐานข้อมูล</label>                                                               
-                                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                            <label for="imageDatabase">รูปภาพโลโก้ ฐานข้อมูล</label>
                                             <input type="file" class="form-control-file"  name="imageDatabase" value="">
                                         </div>
                                     </div>
@@ -94,15 +95,15 @@
                         {{-- No. --}}
                         <th scope="row">{{ $loop->iteration }}</th>
                         {{-- Name --}}
-                        <td>{{ $item['admin_databases_name'] }}</td>
+                        <td>{{ $item['database_name'] }}</td>
                         {{-- link --}}
-                        <td>{{ $item['admin_databases_link'] }}</td>
+                        <td>{{ $item['database_link'] }}</td>
                         {{-- image --}}
                         <td>                        
                             <img 
                             {{-- cut sting '/public/' --}}
-                            src="{{ asset('/storage/'.substr($item['admin_databases_image'],6)) }}" 
-                            alt="{{ $item['admin_databases_name'] }}"
+                            src="{{ asset('/storage/'.substr($item['database_image'],6)) }}" 
+                            alt="{{ $item['database_name'] }}"
                             class="rounded" style="height: 100px;">
                         </td>
                         {{-- Edit --}}
@@ -113,6 +114,7 @@
                                 <div class="modal-dialog" role="document">
                                     {{-- form --}}
                                     <form class="edit_form" action="{{ action('AdminDatabase@update',$item['id']) }}" method="post" enctype="multipart/form-data">
+                                        @csrf @method('PUT')
                                         <div class="modal-content">
                                             <div class="modal-header">
                                                 <h4 class="modal-title" id="admin-database-form-edit"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>  แก้ไข ข้อมูล</h4>
@@ -125,23 +127,22 @@
                                                     <div class="col">
                                                         {{-- name --}}
                                                         <div class="form-group">
-                                                            <label for="titleDatabase">ชื่อฐานข้อมูล</label>
-                                                            <input type="text" name="titleDatabase" value="{{ $item['admin_databases_name'] }}" class="form-control">
+                                                            <label for="nameDatabase">ชื่อฐานข้อมูล</label>
+                                                            <input type="text" name="nameDatabase" value="{{ $item['database_name'] }}" class="form-control">
                                                         </div>
 
                                                         {{-- link --}}
                                                         <div class="form-group">
                                                             <label for="linkDatabase">URL ฐานข้อมูล</label>
-                                                            <input type="text" name="linkDatabase" value="{{ $item['admin_databases_link'] }}" class="form-control">
+                                                            <input type="text" name="linkDatabase" value="{{ $item['database_link'] }}" class="form-control">                                   
+                                                            <small class="form-text text-muted">ใส่เครื่องหมาย # ถ้ายังไม่มีลิงก์</small>
                                                         </div>
 
                                                         {{-- image --}}
                                                         <div class="form-group">
-                                                            <label for="imageDatabase">รูปภาพโลโก้ ฐานข้อมูล :: {{ '' }}</label>
-                                                            <input type="hidden" name="_method" value="PUT" > 
-                                                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                                            <label for="imageDatabase">รูปภาพโลโก้ ฐานข้อมูล :: {{ substr($item['database_image'],11) }}</label>
                                                             <input type="file" name="imageDatabase" value="" class="form-control-file">
-                                                            <img src="{{ asset('/storage/'.substr($item['admin_databases_image'],6)) }}" alt="{{ $item['admin_databases_name'] }}" class="p-2 rounded" style="height: 100px;">
+                                                            <img src="{{ asset('/storage/'.substr($item['database_image'],6)) }}" alt="{{ $item['database_name'] }}" class="p-2 rounded" style="height: 100px;">
                                                         </div> 
                                                     </div>
                                                 </div>
@@ -158,9 +159,8 @@
                         </td>
                         {{-- Delete --}}
                         <td>
-                            <form class="delete_form" action="{{ action('AdminDatabas@destroy',$item['id']) }}" method="post">
-                                {{ csrf_field() }}
-                                <input type="hidden" value="DELETE" name="_method">                            
+                            <form class="delete_form" action="{{ action('AdminDatabase@destroy',$item['id']) }}" method="post">
+                                @csrf @method('DELETE')
                                 <button class="btn btn-danger btn-sm" type="submit" value="Submit"><i class="fa fa-trash-o" aria-hidden="true"></i>  ลบ</button>
                                 </form>
                             </td>

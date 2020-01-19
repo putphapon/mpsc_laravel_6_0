@@ -13,20 +13,20 @@
             <li class="nav-item"><a class="nav-link" href="/">หน้าหลัก</a></li>
 
             <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="/about" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">เกี่ยวกับ</a>
+                <a class="nav-link dropdown-toggle" href="{{ action('HomeAbout@index') }}" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">เกี่ยวกับ</a>
                 <div class="dropdown-menu" aria-labelledby="about">
-                    <a class="dropdown-item bg-transparent" href="/objective">วัตถุประสงค์/การดำเนินงาน</a>
-                    <a class="dropdown-item bg-transparent" href="/board">คณะที่ปรึกษา</a>
+                    <a class="dropdown-item bg-transparent" href="{{ action('HomeAboutObjective@index') }}">วัตถุประสงค์/การดำเนินงาน</a>
+                    <a class="dropdown-item bg-transparent" href="{{ action('HomeAboutBoard@index') }}">คณะที่ปรึกษา</a>
                 </div>
             </li>
     
-            <li class="nav-item"><a class="nav-link" href="/database">ฐานข้อมูล</a></li>
-            <li class="nav-item"><a class="nav-link" href="/scholar">บทความวิชาการ/งานวิจัย</a></li>
-            <li class="nav-item"><a class="nav-link" href="/manuscripts">ธารความรู้</a></li>
-            <li class="nav-item"><a class="nav-link" href="/vdo">สื่อ VDO</a></li>
-            <li class="nav-item"><a class="nav-link" href="/events">กิจกรรม</a></li>
-            <li class="nav-item"><a class="nav-link" href="/shops">ร้านหนังสือ</a></li>
-            <li class="nav-item"><a class="nav-link" href="/contact">ติดต่อเรา</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ action('HomeDatabase@index') }}">ฐานข้อมูล</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ action('HomeScholar@index') }}">บทความวิชาการ/งานวิจัย</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ action('HomeManuscripts@index') }}">ธารความรู้</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ action('HomeVdo@index') }}">สื่อ VDO</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ action('HomeEvents@index') }}">กิจกรรม</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ action('HomeShops@index') }}">ร้านหนังสือ</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ action('HomeContact@index') }}">ติดต่อเรา</a></li>
 
         </ul>
 

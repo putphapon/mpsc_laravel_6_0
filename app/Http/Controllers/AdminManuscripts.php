@@ -3,9 +3,25 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use App\Http\Controllers\DB;
+use App\AdminManuscriptsCategoryModel; 
+use App\AdminManuscriptsBlogModel; 
+
+
 
 class AdminManuscripts extends Controller
 {
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -13,8 +29,15 @@ class AdminManuscripts extends Controller
      */
     public function index()
     {
-        //
-        return view('admin.manuscripts-admin');
+        //select
+        $dataManuscriptsCategory = AdminManuscriptsCategoryModel::all()
+                                    ->sortByDesc('updated_at')
+                                    ->toArray();
+        $dataManuscriptsBlog = AdminManuscriptsBlogModel::all()
+                                    ->sortByDesc('updated_at')
+                                    ->toArray();
+
+        return view('admin.manuscripts-admin', compact('dataManuscriptsCategory','dataManuscriptsBlog'));
     }
 
     /**
