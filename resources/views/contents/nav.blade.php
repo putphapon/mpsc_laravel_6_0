@@ -27,12 +27,17 @@
             <li class="nav-item"><a class="nav-link" href="{{ action('HomeEvents@index') }}">กิจกรรม</a></li>
             <li class="nav-item"><a class="nav-link" href="{{ action('HomeShops@index') }}">ร้านหนังสือ</a></li>
             <li class="nav-item"><a class="nav-link" href="{{ action('HomeContact@index') }}">ติดต่อเรา</a></li>
-
         </ul>
 
-        <form class="form-inline  my-2 my-lg-0">
-            <input class="form-control mr-sm-2" type="search" placeholder="ค้นหา" aria-label="Search">
-            <button class="btn btn-outline-light my-2 my-sm-0" type="submit">ค้นหา</button>
-        </form>
+        <div class="btn-group"style="width: 250px";>
+            <button type="button" class="btn btn-outline-light dropdown-toggle btn-block" data-toggle="dropdown" data-display="static" aria-haspopup="true" aria-expanded="false">
+                ค้นหา
+            </button>
+            <div class="dropdown-menu">
+                <script async src="https://cse.google.com/cse.js?cx=008341805127915127433:42dxa5yxayl"></script>
+                <div class="gcse-search"></div>
+            </div>
+        </div>
+        
     </div>
 </nav>
